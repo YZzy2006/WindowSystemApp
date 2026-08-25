@@ -1,0 +1,35 @@
+# 本地开发配置模板（含密钥示例，仅用于参考）
+# 真实配置 application-local.yml 被 .gitignore 排除，不提交到仓库。
+# 使用：复制本文件为 application-local.yml，并替换下方示例密钥为你的真实密钥。
+#
+# 密钥生成方式：
+#   JWT 密钥：任意足够长的字符串（至少 32 字节），如 `openssl rand -base64 48`
+#   AES 密钥：32 字节后用 Base64 编码，如 `openssl rand -base64 32`
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:${user.dir}/data/window_db;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password:
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+  sql:
+    init:
+      mode: never
+      encoding: UTF-8
+  h2:
+    console:
+      enabled: false
+
+jwt:
+  # 替换为你的 JWT 签名密钥
+  secret: YOUR_JWT_SECRET_REPLACE_ME
+
+app:
+  encryption:
+    # 替换为你的 AES-256 密钥（32 字节 Base64）
+    secret: YOUR_BASE64_32BYTE_AES_KEY_REPLACE_ME
+
+cors:
+  allowed-origins: tauri://localhost,http://localhost:8080,http://localhost

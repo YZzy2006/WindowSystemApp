@@ -1,0 +1,44 @@
+{
+    "$schema":  "https://schema.tauri.app/config/2",
+    "productName":  "顺居门业管理系统",
+    "version":  "1.0.4",
+    "identifier":  "com.shunjumc.window-system",
+    "build":  {
+                  "frontendDist":  "../src/main/resources/static"
+              },
+    "app":  {
+                "windows":  [
+
+                            ],
+                "security":  {
+                                 "csp":  null
+                             }
+            },
+    "bundle":  {
+                   "active":  true,
+                   "targets":  [
+                                   "msi"
+                               ],
+                   "icon":  [
+                                "icons/32x32.png",
+                                "icons/128x128.png",
+                                "icons/128x128@2x.png",
+                                "icons/icon.icns",
+                                "icons/icon.ico"
+                            ],
+                   "resources":  [
+                                     "resources/window-system-1.0.0.jar"
+                                 ],
+                   "windows":  {
+                                   "webviewInstallMode":  {
+                                                              "type":  "embedBootstrapper",
+                                                              "silent":  true
+                                                          },
+                                   "allowDowngrades":  false,
+                                   "wix":  {
+                                               "language":  "zh-CN",
+                                               "template":  "wix/main.wxs"
+                                           }
+                               }
+               }
+}

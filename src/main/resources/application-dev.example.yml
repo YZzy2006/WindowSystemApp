@@ -1,0 +1,17 @@
+# 开发环境配置模板（含密钥示例，仅用于参考）
+# 真实配置 application-dev.yml 被 .gitignore 排除，不提交到仓库。
+# 使用：复制本文件为 application-dev.yml，并替换下方示例密钥/密码为你的真实值。
+spring:
+  datasource:
+    username: root
+    # 替换为你的 MySQL 密码（开发库）
+    password: change_me
+
+jwt:
+  # 替换为你的 JWT 签名密钥
+  secret: YOUR_JWT_SECRET_DEV
+
+app:
+  encryption:
+    # 替换为你的 AES-256 密钥（32 字节 Base64）
+    secret: YOUR_BASE64_32BYTE_AES_KEY_DEV
