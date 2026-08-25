@@ -4,7 +4,7 @@
 
 **Window System · 门窗门店一体化管理平台**
 
-> 销售订单 · 采购库存 · 财务应收 · 产品计价 · 公式引擎 · 打印报表 · 桌面客户端
+> 门窗定制企业一站式业务管理系统：覆盖销售订单、采购库存、财务应收、产品计价、打印报表，并提供 Windows 桌面安装包，单机即可离线使用。
 
 <br/>
 
@@ -17,6 +17,8 @@
 ![H2](https://img.shields.io/badge/Database-H2%2FMySQL-yellow?style=flat-square)
 ![JWT](https://img.shields.io/badge/Auth-JWT-black?style=flat-square)
 ![License](https://img.shields.io/badge/License-MIT-lightgrey?style=flat-square)
+
+**技术栈：** Spring Boot 3.3.7, Java 17, MyBatis-Plus 3.5.5, Vue 3.4, Element Plus, ECharts, Tauri 2, H2, MySQL, JWT
 
 **覆盖门窗定制企业核心业务全流程 · 前后端一体化 · Windows MSI 安装包**
 
@@ -34,7 +36,7 @@
 | [🧠 关键技术点](#-关键技术点与难点解决) | 公式引擎 / 并发锁 / 数据安全 |
 | [🗄️ 数据模型](#-数据模型设计) | 核心业务表结构 |
 | [🚀 快速运行](#-快速运行指南) | 开发与打包 MSI |
-| [🖼️ 界面预览](#-界面预览) | 界面截图（待补充） |
+| [🖼️ 界面预览](#-界面预览) | 系统界面截图（照片 1-5） |
 
 ---
 
