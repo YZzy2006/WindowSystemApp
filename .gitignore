@@ -1,0 +1,64 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Runtime ###
+/data/
+/java.log
+
+### 敏感配置（含密钥，不提交）###
+/src/main/resources/application-dev.yml
+/src/main/resources/application-local.yml
+
+### 前端构建产物 ###
+/src/main/resources/static/
+/frontend/node_modules/
+/frontend/dist/
+
+### 数据与备份（不提交）###
+/backups/
+/uploads/
+/data-export/
+
+### 内部知识库 / IDE / 工具配置 ###
+.ai-memory/
+.claude/
+.agents/
+skills-lock.json
+
+### 小程序（独立仓库）###
+/miniapp/
+
+### 构建产物 ###
+/src-tauri/target/
+/src-tauri/resources/*.jar
