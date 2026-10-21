@@ -75,7 +75,7 @@ const loginRules = {
 const loading = ref(false)
 const error = ref('')
 const kickMsg = ref('')
-const REMEMBER_KEY = 'shunju_login_remember'
+const REMEMBER_KEY = 'window_system_login_remember'
 const remember = ref(false)
 // base64 混淆存储（UTF-8 安全），仅防明文直读，非真实加密
 const encodeText = (s) => btoa(encodeURIComponent(s))

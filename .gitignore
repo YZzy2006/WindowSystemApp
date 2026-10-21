@@ -52,6 +52,7 @@ build/
 
 ### 内部知识库 / IDE / 工具配置 ###
 .ai-memory/
+.workbuddy-ai/
 .claude/
 .agents/
 skills-lock.json

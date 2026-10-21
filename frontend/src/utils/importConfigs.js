@@ -41,8 +41,8 @@ export const importConfigs = {
       { label: '明细备注', key: 'itemRemark', type: 'string', itemField: true },
     ],
     sample: {
-      orderNo: 'XS2025001', orderType: '销售单', customerName: '张三', customerPhone: '13800138000',
-      customerAddress: '广东省佛山市南海区', orderDate: '2025-01-15', deposit: 5000,
+      orderNo: 'XS2025001', orderType: '销售单', customerName: '张三', customerPhone: '13800000000',
+      customerAddress: '示例省示例市示例区', orderDate: '2025-01-15', deposit: 5000,
       status: '待处理', remark: '', notice: '',
       productName: '断桥铝推拉门', series: '80系列', color: '砂灰色', productType: '推拉门',
       width: 2000, height: 2400, wallThickness: 80, glassType: '双层中空', lockPosition: '右锁',
@@ -77,8 +77,8 @@ export const importConfigs = {
       { label: '明细备注', key: 'itemRemark', type: 'string', itemField: true },
     ],
     sample: {
-      orderNo: 'CG2025001', supplierName: '佛山铝材厂', supplierContact: '李四', supplierPhone: '13900139000',
-      supplierAddress: '广东省佛山市三水区', orderDate: '2025-01-16',
+      orderNo: 'CG2025001', supplierName: '示例铝材厂', supplierContact: '李四', supplierPhone: '13900000000',
+      supplierAddress: '示例省示例市示例区', orderDate: '2025-01-16',
       status: '待处理', remark: '',
       productName: '铝型材80系列', productCategory: '型材', spec: '80×80×1.4mm', unit: '支',
       warehouseLoc: 'A-01', quantity: 100, unitPrice: 80, itemRemark: '',
@@ -138,7 +138,7 @@ export const importConfigs = {
       { label: '明细备注', key: 'itemRemark', type: 'string', itemField: true },
     ],
     sample: {
-      orderNo: 'CT2025001', originalOrderNo: 'CG2025001', supplierName: '佛山铝材厂', returnDate: '2025-02-05',
+      orderNo: 'CT2025001', originalOrderNo: 'CG2025001', supplierName: '示例铝材厂', returnDate: '2025-02-05',
       status: '待处理', remark: '质量问题',
       productName: '铝型材80系列', productCategory: '型材', spec: '80×80×1.4mm', unit: '支',
       quantity: 10, unitPrice: 80, itemRemark: '',
@@ -196,7 +196,7 @@ export const importConfigs = {
       { label: '地址', key: 'address', type: 'string' },
       { label: '备注', key: 'remark', type: 'string' },
     ],
-    sample: { name: '张三', contact: '张三', phone: '13800138000', address: '广东省佛山市南海区', remark: '' },
+    sample: { name: '张三', contact: '张三', phone: '13800000000', address: '示例省示例市示例区', remark: '' },
   },
 
   // ===== 供应商管理 =====
@@ -208,7 +208,7 @@ export const importConfigs = {
       { label: '地址', key: 'address', type: 'string' },
       { label: '备注', key: 'remark', type: 'string' },
     ],
-    sample: { name: '佛山铝材厂', contact: '李四', phone: '13900139000', address: '广东省佛山市三水区', remark: '' },
+    sample: { name: '示例铝材厂', contact: '李四', phone: '13900000000', address: '示例省示例市示例区', remark: '' },
   },
 
   // ===== 商品库存 =====

@@ -202,8 +202,8 @@
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">订单编号</span><span class="p-value mono" :style="previewSectionFontSize('info', 10)">SJ2026050001</span></div>
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">开单日期</span><span class="p-value" :style="previewSectionFontSize('info', 11)">2026/05/19</span></div>
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">客户</span><span class="p-value" :style="previewSectionFontSize('info', 11)">张三</span></div>
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">联系电话</span><span class="p-value" :style="previewSectionFontSize('info', 11)">13800138000</span></div>
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">安装地址</span><span class="p-value" :style="previewSectionFontSize('info', 11)">示例市某小区</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">联系电话</span><span class="p-value" :style="previewSectionFontSize('info', 11)">13800000000</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">安装地址</span><span class="p-value" :style="previewSectionFontSize('info', 11)">示例小区</span></div>
               </div>
               <div class="p-info-right" :style="{ textAlign: config.sectionStyles.info.align || 'left' }">
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">制单人</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorName || '示例制单人' }}</span></div>
@@ -558,7 +558,7 @@
                 </div>
                 <div class="as-p-info-item" v-if="asConfig.showTechnician">
                   <span class="as-p-label" :style="asPreviewSectionFontSize('info', 10)">师傅</span>
-                  <span class="as-p-value" :style="asPreviewSectionFontSize('info', 11)">李师傅</span>
+                  <span class="as-p-value" :style="asPreviewSectionFontSize('info', 11)">示例师傅</span>
                 </div>
                 <div class="as-p-info-item">
                   <span class="as-p-label" :style="asPreviewSectionFontSize('info', 10)">预约日期</span>

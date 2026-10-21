@@ -228,6 +228,7 @@ export const deleteCustomerFollowup = (id) => request.delete(`/admin/customer-fo
 // ==================== 账号管理 ====================
 export const getAdminAccounts = () => request.get('/admin/accounts')
 export const createAdminAccount = (data) => request.post('/admin/accounts', data)
+export const updateAdminAccount = (id, data) => request.put(`/admin/accounts/${id}`, data)
 export const freezeAdminAccount = (id) => request.put(`/admin/accounts/${id}/freeze`)
 export const unfreezeAdminAccount = (id) => request.put(`/admin/accounts/${id}/unfreeze`)
 export const resetAdminPassword = (id, newPassword) => request.put(`/admin/accounts/${id}/reset-password`, { newPassword })

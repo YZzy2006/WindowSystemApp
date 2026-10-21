@@ -49,7 +49,7 @@
              running deletes the old product but cannot write the new files,
              leaving the app "disappeared" after a restart. -->
         <util:CloseApplication
-            Id="CloseShunjuApp"
+            Id="CloseWindowSystemApp"
             Target="app.exe"
             CloseMessage="yes"
             TerminateProcess="1"
