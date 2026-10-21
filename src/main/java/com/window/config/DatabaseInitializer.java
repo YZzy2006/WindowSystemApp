@@ -1,5 +1,8 @@
 package com.window.config;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -7,9 +10,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
+import java.sql.Clob;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -21,10 +27,15 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private final JdbcTemplate jdbc;
     private final DataSource dataSource;
+    private final PasswordEncoder passwordEncoder;
+    private final ObjectMapper objectMapper;
 
-    public DatabaseInitializer(JdbcTemplate jdbc, DataSource dataSource) {
+    public DatabaseInitializer(JdbcTemplate jdbc, DataSource dataSource,
+                               PasswordEncoder passwordEncoder, ObjectMapper objectMapper) {
         this.jdbc = jdbc;
         this.dataSource = dataSource;
+        this.passwordEncoder = passwordEncoder;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -56,8 +67,207 @@ public class DatabaseInitializer implements CommandLineRunner {
 
         // 无论是否首次启动，都幂等补齐历史上缺失的列
         ensureColumns();
+        // 老版本安装升级：旧默认演示账号清理 + 超管旧默认密码迁移
+        migrateLegacyDefaultAccounts();
+        // 开源版一次性脱敏：清理旧库里的公司/打印/站点信息与登录/操作日志（保留客户/订单等业务数据）
+        sanitizeLegacyOpenSourceData();
         // 公式模型迁移：商品回填 formulaId（单位默认公式 / 旧 pricingRule）
         migrateCommodityFormula();
+    }
+
+    /**
+     * 存量库升级迁移（幂等、异常安全）：
+     * 1. admin 仍是旧默认密码 admin123 时，升级为 admin123456，并确保 role=super_admin、未冻结；
+     *    用户已自行改过密码则不处理。
+     * 2. 删除旧版内置演示账号：仅当密码哈希仍等于旧默认值时才删，
+     *    避免误删用户改过密码的账号；不硬编码旧用户名。
+     */
+    private void migrateLegacyDefaultAccounts() {
+        // 1) 超管旧默认密码升级
+        try {
+            List<Map<String, Object>> admins = jdbc.queryForList(
+                    "SELECT id, password FROM admin WHERE username = ?", "admin");
+            for (Map<String, Object> row : admins) {
+                Object idObj = row.get("id");
+                Object pwdObj = row.get("password");
+                if (idObj == null || pwdObj == null) continue;
+                String currentHash = pwdObj.toString();
+                if (!passwordEncoder.matches("admin123", currentHash)) continue; // 用户已改过密码，跳过
+                long id = ((Number) idObj).longValue();
+                jdbc.update("UPDATE admin SET password = ?, role = 'super_admin', is_frozen = 0 WHERE id = ?",
+                        passwordEncoder.encode("admin123456"), id);
+                log.info("超级管理员 admin (id={}) 旧默认密码已升级为新默认密码，并设为 super_admin/未冻结", id);
+            }
+        } catch (Exception e) {
+            log.warn("超级管理员默认密码迁移失败（不影响启动）: {}", e.getMessage());
+        }
+
+        // 2) 删除旧内置演示账号：只用密码哈希匹配，不硬编码旧用户名
+        String[] legacyHashes = {
+                "$2b$12$enMhetSuARxqHlScVMEDeeN60HbqDNCuevKivVbbqXX.PePhTg52W",
+                "$2b$12$7MFX8qGoxG0E4XID9Bf.HeFMKcUaWGT/O.yglyKIksIdPDixRlY4O",
+                "$2b$12$ijbDRbl6uTO.PBOsVmxwMuhJ5c0LtPyznXeixXxwxeDRbd1OSA2ZK",
+        };
+        int removed = 0;
+        for (String hash : legacyHashes) {
+            try {
+                removed += jdbc.update(
+                        "DELETE FROM admin WHERE password = ? AND username <> 'admin'", hash);
+            } catch (Exception e) {
+                log.warn("删除旧内置演示账号失败（跳过）: {}", e.getMessage());
+            }
+        }
+        if (removed > 0) {
+            log.info("已删除 {} 个旧版内置演示账号", removed);
+        }
+    }
+
+    /**
+     * 开源版一次性脱敏（幂等，只执行一次）：
+     * 1. 打印设置里的公司名称/制单人/电话/地址替换为示例值（保留列设置、预设）；
+     * 2. sys_config 的公司信息/打印标题替换为示例值；
+     * 3. 删除旧 site_config（下次访问会写入脱敏后的默认站点配置）；
+     * 4. 删除旧 login_log / operation_log（避免遗留真实 IP/账号）；
+     * 不触碰 customer/sale_order/payment 等业务数据。
+     */
+    private void sanitizeLegacyOpenSourceData() {
+        try {
+            Integer done = jdbc.queryForObject(
+                    "SELECT COUNT(*) FROM sys_config WHERE config_key = 'open_source_sanitized'", Integer.class);
+            if (done != null && done > 0) return;
+        } catch (Exception e) {
+            log.info("脱敏标记检查失败，按未脱敏处理: {}", e.getMessage());
+        }
+
+        boolean ok = true;
+        try {
+            sanitizePrintSettings();
+        } catch (Exception e) {
+            ok = false;
+            log.warn("打印设置脱敏失败（下次启动重试）: {}", e.getMessage());
+        }
+        try {
+            upsertConfig("company_name", "示例门窗", "公司名称");
+            upsertConfig("company_phone", "13800000000", "公司电话");
+            upsertConfig("company_address", "示例省示例市示例区示例路1号", "公司地址");
+            upsertConfig("print_title_sale", "示例门窗客户销售单", "销售单打印标题");
+            upsertConfig("print_title_presale", "示例门窗客户预算单", "预算单打印标题");
+        } catch (Exception e) {
+            ok = false;
+            log.warn("公司信息脱敏失败（下次启动重试）: {}", e.getMessage());
+        }
+        try {
+            int deleted = jdbc.update("DELETE FROM site_config");
+            if (deleted > 0) log.info("已删除旧站点配置 {} 行，下次访问将写入示例配置", deleted);
+        } catch (Exception e) {
+            ok = false;
+            log.warn("站点配置清理失败（下次启动重试）: {}", e.getMessage());
+        }
+        try {
+            int loginRows = jdbc.update("DELETE FROM login_log");
+            int opRows = jdbc.update("DELETE FROM operation_log");
+            if (loginRows + opRows > 0) {
+                log.info("已删除旧登录日志 {} 行、操作日志 {} 行（含 IP/账号信息）", loginRows, opRows);
+            }
+        } catch (Exception e) {
+            ok = false;
+            log.warn("旧日志清理失败（下次启动重试）: {}", e.getMessage());
+        }
+
+        if (ok) {
+            try {
+                upsertConfig("open_source_sanitized", "1", "开源版一次性脱敏标记");
+                log.info("开源版数据脱敏完成（客户/订单等业务数据未改动）");
+            } catch (Exception e) {
+                log.warn("写入脱敏标记失败: {}", e.getMessage());
+            }
+        }
+    }
+
+    private void sanitizePrintSettings() throws Exception {
+        List<Map<String, Object>> rows = jdbc.queryForList("SELECT id, config FROM print_setting");
+        for (Map<String, Object> row : rows) {
+            Object raw = row.get("config");
+            String config;
+            if (raw instanceof Clob clob) {
+                config = clob.getSubString(1, (int) clob.length());
+            } else {
+                config = raw == null ? null : raw.toString();
+            }
+            if (config == null || config.isBlank()) continue;
+            String sanitized = sanitizePrintConfigString(config);
+            if (!sanitized.equals(config)) {
+                jdbc.update("UPDATE print_setting SET config = ?, update_time = CURRENT_TIMESTAMP WHERE id = ?",
+                        sanitized, row.get("id"));
+            }
+        }
+    }
+
+    /**
+     * 旧库存的 print_setting.config 是“二次转义”的 JSON（形如 {\"columns\":...}），
+     * 直接 Jackson 解析会失败。依次尝试：正常 JSON → 去转义后 JSON → 原始字符串替换。
+     */
+    private String sanitizePrintConfigString(String config) {
+        try {
+            JsonNode root = objectMapper.readTree(config);
+            sanitizePrintNode(root);
+            return objectMapper.writeValueAsString(root);
+        } catch (Exception ignored) {
+            // try legacy double-escaped JSON below
+        }
+        try {
+            JsonNode root = objectMapper.readTree(config.replace("\\\"", "\""));
+            sanitizePrintNode(root);
+            return objectMapper.writeValueAsString(root);
+        } catch (Exception ignored) {
+            // fall through to raw string replacement
+        }
+        return config
+                .replace("顺居门业", "示例门窗")
+                .replace("顺居门窗", "示例门窗")
+                .replace("顺居", "示例门窗")
+                .replace("冯伟明", "示例制单人")
+                .replace("18948846839", "13800000000")
+                .replace("189-4884-6839", "138-0000-0000")
+                .replace("乳源县二九一物流仓库", "示例省示例市示例区示例路1号")
+                .replace("乳源县", "示例市")
+                .replace("乳源", "示例市");
+    }
+
+    private void sanitizePrintNode(JsonNode node) {
+        if (node == null) return;
+        if (node.isObject()) {
+            ObjectNode obj = (ObjectNode) node;
+            if (obj.has("companyName")) obj.put("companyName", "示例门窗");
+            if (obj.has("creatorName")) obj.put("creatorName", "示例制单人");
+            if (obj.has("creatorPhone")) obj.put("creatorPhone", "13800000000");
+            if (obj.has("creatorAddress")) obj.put("creatorAddress", "示例省示例市示例区示例路1号");
+            JsonNode company = obj.get("company");
+            if (company != null && company.isObject()) {
+                ObjectNode c = (ObjectNode) company;
+                c.put("name", "示例门窗");
+                c.put("phone", "13800000000");
+                c.put("address", "示例省示例市示例区示例路1号");
+            }
+            Iterator<Map.Entry<String, JsonNode>> it = obj.fields();
+            while (it.hasNext()) {
+                JsonNode child = it.next().getValue();
+                if (child.isObject() || child.isArray()) sanitizePrintNode(child);
+            }
+        } else if (node.isArray()) {
+            for (JsonNode child : node) sanitizePrintNode(child);
+        }
+    }
+
+    private void upsertConfig(String key, String value, String remark) {
+        int updated = jdbc.update(
+                "UPDATE sys_config SET config_value = ?, remark = ?, update_time = CURRENT_TIMESTAMP WHERE config_key = ?",
+                value, remark, key);
+        if (updated == 0) {
+            jdbc.update("INSERT INTO sys_config (config_key, config_value, remark, create_time, update_time) "
+                            + "VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)",
+                    key, value, remark);
+        }
     }
 
     /**

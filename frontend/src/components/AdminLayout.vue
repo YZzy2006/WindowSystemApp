@@ -3,7 +3,7 @@
     <aside class="sidebar">
       <div class="sidebar-brand">
         <span class="brand-icon">◈</span>
-        <span class="brand-text">顺居门业</span>
+        <span class="brand-text">示例门窗</span>
         <span class="brand-tag">管理后台</span>
       </div>
       <nav class="sidebar-nav">

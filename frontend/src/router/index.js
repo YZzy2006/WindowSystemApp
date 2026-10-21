@@ -72,7 +72,7 @@ let progressBarTimer = null
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
-  document.title = to.meta.title || '顺居门业'
+  document.title = to.meta.title || '示例门窗'
 
   // 显示进度条
   const bar = document.getElementById('route-progress-bar')

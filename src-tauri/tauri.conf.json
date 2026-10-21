@@ -1,8 +1,8 @@
 {
     "$schema":  "https://schema.tauri.app/config/2",
-    "productName":  "顺居门业管理系统",
-    "version":  "1.0.4",
-    "identifier":  "com.shunjumc.window-system",
+    "productName":  "门窗管理系统",
+    "version":  "1.0.5",
+    "identifier":  "com.example.window-system",
     "build":  {
                   "frontendDist":  "../src/main/resources/static"
               },

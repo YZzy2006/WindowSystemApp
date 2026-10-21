@@ -47,15 +47,15 @@
         <div class="form-grid">
           <div class="form-item full">
             <label>公司名称</label>
-            <input v-model="settings.company_name" placeholder="顺居门业" />
+            <input v-model="settings.company_name" placeholder="示例门窗" />
           </div>
           <div class="form-item">
             <label>联系电话</label>
-            <input v-model="settings.company_phone" placeholder="18948846839" />
+            <input v-model="settings.company_phone" placeholder="13800000000" />
           </div>
           <div class="form-item">
             <label>公司地址</label>
-            <input v-model="settings.company_address" placeholder="乳源县二九一物流仓库" />
+            <input v-model="settings.company_address" placeholder="示例省示例市示例区示例路1号" />
           </div>
         </div>
       </div>
@@ -66,11 +66,11 @@
         <div class="form-grid">
           <div class="form-item full">
             <label>销售单标题</label>
-            <input v-model="settings.print_title_sale" placeholder="顺居门业客户销售单" />
+            <input v-model="settings.print_title_sale" placeholder="示例门窗客户销售单" />
           </div>
           <div class="form-item full">
             <label>预算单标题</label>
-            <input v-model="settings.print_title_presale" placeholder="顺居门窗客户预算单" />
+            <input v-model="settings.print_title_presale" placeholder="示例门窗客户预算单" />
           </div>
         </div>
       </div>
@@ -107,11 +107,11 @@ const settings = reactive({
   purchase_return_prefix: 'CT',
   stock_in_prefix: 'RK',
   stock_out_prefix: 'CK',
-  company_name: '顺居门业',
-  company_phone: '18948846839',
-  company_address: '乳源县二九一物流仓库',
-  print_title_sale: '顺居门业客户销售单',
-  print_title_presale: '顺居门窗客户预算单',
+  company_name: '示例门窗',
+  company_phone: '13800000000',
+  company_address: '示例省示例市示例区示例路1号',
+  print_title_sale: '示例门窗客户销售单',
+  print_title_presale: '示例门窗客户预算单',
   installation_terms: '',
   warranty_terms: ''
 })

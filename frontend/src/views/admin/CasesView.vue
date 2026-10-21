@@ -114,7 +114,7 @@
           <div class="form-row">
             <div class="form-group flex-1">
               <label>小区/位置</label>
-              <input v-model="form.location" placeholder="如：碧桂园18栋1503" />
+              <input v-model="form.location" placeholder="如：示例小区1栋101" />
             </div>
             <div class="form-group flex-1">
               <label>关联产品 <span class="hint-label">（选填，可多选）</span></label>

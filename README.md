@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚪 顺居门业管理系统
+# 🚪 门窗管理系统
 
 **Window System · 门窗门店一体化管理平台**
 
@@ -195,6 +195,16 @@ window-system
 
 ## 🚀 快速运行指南
 
+> ### 🔑 初始账号（重要）
+>
+> - **初始超级管理员**：`admin` / `admin123456`
+> - **示例普通管理员**：`test01` ~ `test05` / `Test123456`（仅用于演示角色权限，可在「账号管理」中删除）
+> - 内置示例客户、订单、供应商、案例等演示数据，均可直接删除
+> - **首次登录后请立即修改密码**（账号管理 → 重置密码）
+> - 开源版不包含任何真实客户、员工或公司信息
+>
+> ⚠️ 请勿在生产环境继续使用默认密码。
+
 ### 环境要求
 
 JDK 17+ · Maven 3.6+ · Node 18+ · Rust（Tauri 打包）
@@ -251,7 +261,7 @@ cd src-tauri && cargo tauri build    # 产物 target/release/bundle/msi/
 `jwt.secret` 未配置或 <32 字节。设置 ≥32 字节签名密钥。
 
 **Q3：桌面应用数据在哪？**
-Program Files 安装 → 数据在 `%APPDATA%\com.shunjumc.window-system`；D 盘安装 → 安装目录 `data/`。
+Program Files 安装 → 数据在 `%APPDATA%\com.example.window-system`；D 盘安装 → 安装目录 `data/`。
 
 **Q4：异常退出想排查？**
 重启后桌面上会出现「崩溃日志」文件，发送给开发者即可。
@@ -272,7 +282,7 @@ Program Files 安装 → 数据在 `%APPDATA%\com.shunjumc.window-system`；D �
 
 ![界面截图 1](docs/screenshots/photo1.png)
 
-> 系统登录界面
+> 客户管理（内置示例数据）
 
 ### 照片 2
 
@@ -284,19 +294,19 @@ Program Files 安装 → 数据在 `%APPDATA%\com.shunjumc.window-system`；D �
 
 ![界面截图 3](docs/screenshots/photo3.png)
 
-> 销售订单管理
+> 订单总览
 
 ### 照片 4
 
 ![界面截图 4](docs/screenshots/photo4.png)
 
-> 商品明细与计价
+> 销售订单管理
 
 ### 照片 5
 
 ![界面截图 5](docs/screenshots/photo5.png)
 
-> 打印预览
+> 账号管理（超级管理员 / 普通管理员）
 
 ---
 

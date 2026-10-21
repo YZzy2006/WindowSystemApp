@@ -70,7 +70,9 @@ CREATE TABLE IF NOT EXISTS admin (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) UNIQUE,
     password VARCHAR(100),
-    token_id VARCHAR(50) COMMENT '当前有效会话标识'
+    token_id VARCHAR(50) COMMENT '当前有效会话标识',
+    role VARCHAR(20) NOT NULL DEFAULT 'admin' COMMENT '角色: super_admin / admin',
+    is_frozen TINYINT NOT NULL DEFAULT 0 COMMENT '是否冻结: 0=正常 1=冻结'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 登录日志表
@@ -104,8 +106,15 @@ CREATE TABLE IF NOT EXISTS site_config (
     config_json MEDIUMTEXT COMMENT '首页各模块的 JSON 配置'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 插入默认管理员（首次登录时自动升级为 BCrypt 加密）
-INSERT IGNORE INTO admin (username, password) VALUES ('admin', 'admin123');
+-- 插入默认超级管理员（admin / admin123456，密码为 BCrypt 哈希）
+-- 开源版只预置这一个账号，其余普通管理员由登录后在「账号管理」中创建
+INSERT IGNORE INTO admin (username, password, role, is_frozen) VALUES
+('admin', '$2a$10$9kb1hSPhmJ/ymW8pRCtBceSRS./ukpjjw0SpHrP0h/VHDgqyaUviq', 'super_admin', 0),
+('test01', '$2a$10$NnjJ4RdxhRL/ouO7WKmnEuBo.wc5eFBWGQFs70EgPS08wdk1U98Ha', 'admin', 0),
+('test02', '$2a$10$NnjJ4RdxhRL/ouO7WKmnEuBo.wc5eFBWGQFs70EgPS08wdk1U98Ha', 'admin', 0),
+('test03', '$2a$10$NnjJ4RdxhRL/ouO7WKmnEuBo.wc5eFBWGQFs70EgPS08wdk1U98Ha', 'admin', 0),
+('test04', '$2a$10$NnjJ4RdxhRL/ouO7WKmnEuBo.wc5eFBWGQFs70EgPS08wdk1U98Ha', 'admin', 0),
+('test05', '$2a$10$NnjJ4RdxhRL/ouO7WKmnEuBo.wc5eFBWGQFs70EgPS08wdk1U98Ha', 'admin', 0);
 
 -- 客户表（如果不存在则创建）
 CREATE TABLE IF NOT EXISTS customer (
@@ -182,9 +191,9 @@ INSERT IGNORE INTO sys_config (config_key, config_value, remark) VALUES
 ('purchase_return_prefix', 'CT', '采购退货单号前缀'),
 ('stock_in_prefix', 'RK', '入库单号前缀'),
 ('stock_out_prefix', 'CK', '出库单号前缀'),
-('company_name', '顺居门业', '公司名称'),
-('company_phone', '18948846839', '公司电话'),
-('company_address', '乳源县二九一物流仓库', '公司地址'),
-('print_title_sale', '顺居门业客户销售单', '销售单打印标题'),
-('print_title_presale', '顺居门窗客户预算单', '预算单打印标题'),
+('company_name', '示例门窗', '公司名称'),
+('company_phone', '13800000000', '公司电话'),
+('company_address', '示例省示例市示例区示例路1号', '公司地址'),
+('print_title_sale', '示例门窗客户销售单', '销售单打印标题'),
+('print_title_presale', '示例门窗客户预算单', '预算单打印标题'),
 ('presale_order_prefix', 'YS', '预算单号前缀');

@@ -3,7 +3,7 @@
     <div class="page-header">
       <div>
         <h2>经营看板</h2>
-        <p class="page-desc">{{ todayStr }} · 顺居门业管理系统</p>
+        <p class="page-desc">{{ todayStr }} · 门窗管理系统</p>
       </div>
       <div class="header-actions">
         <RefreshButton :on-refresh="refresh" />

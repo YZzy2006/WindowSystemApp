@@ -55,6 +55,22 @@ public class AdminManagementController {
         }
     }
 
+    @PutMapping("/{id}")
+    public Result update(@PathVariable Integer id, @RequestBody Map<String, String> body, HttpServletRequest request) {
+        if (!isSuperAdmin(request)) return Result.error(403, "权限不足");
+        String username = body.get("username");
+        if (username == null || username.trim().isEmpty()) {
+            return Result.error(400, "用户名不能为空");
+        }
+        try {
+            adminService.renameAdmin(id, username);
+            log.info("管理员操作: {} 修改了管理员 id={} 的用户名为 [{}]", getAdminUsername(request), id, username.trim());
+            return Result.success("修改成功");
+        } catch (IllegalArgumentException e) {
+            return Result.error(400, e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}/freeze")
     public Result freeze(@PathVariable Integer id, HttpServletRequest request) {
         if (!isSuperAdmin(request)) return Result.error(403, "权限不足");

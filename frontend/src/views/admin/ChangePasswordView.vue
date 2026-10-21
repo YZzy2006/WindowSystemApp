@@ -33,7 +33,7 @@
 
     <div class="page-header">
       <h2>账号与安全</h2>
-      <p class="page-desc">{{ todayStr }} · 顺居门业管理系统</p>
+      <p class="page-desc">{{ todayStr }} · 门窗管理系统</p>
     </div>
 
     <!-- ===== 系统信息 ===== -->

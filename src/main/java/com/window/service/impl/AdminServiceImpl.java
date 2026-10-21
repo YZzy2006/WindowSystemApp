@@ -87,6 +87,33 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public void renameAdmin(Integer id, String newUsername) {
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            throw new IllegalArgumentException("用户名不能为空");
+        }
+        String name = newUsername.trim();
+        if (name.length() > 50) {
+            throw new IllegalArgumentException("用户名不能超过50个字符");
+        }
+        Admin admin = adminMapper.selectById(id);
+        if (admin == null) throw new IllegalArgumentException("管理员不存在");
+        if ("super_admin".equals(admin.getRole())) {
+            throw new IllegalArgumentException("不能修改超级管理员的用户名");
+        }
+        if (name.equals(admin.getUsername())) return;
+        Long exists = adminMapper.selectCount(new LambdaQueryWrapper<Admin>()
+                .eq(Admin::getUsername, name)
+                .ne(Admin::getId, id));
+        if (exists != null && exists > 0) {
+            throw new IllegalArgumentException("用户名已存在");
+        }
+        adminMapper.update(null, new LambdaUpdateWrapper<Admin>()
+                .eq(Admin::getId, id)
+                .set(Admin::getUsername, name));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void freezeAdmin(Integer id) {
         Admin admin = adminMapper.selectById(id);
         if (admin == null) throw new IllegalArgumentException("管理员不存在");

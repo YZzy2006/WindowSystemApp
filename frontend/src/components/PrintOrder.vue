@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="print-header" :class="secClass('header')" :style="sectionBold('header')" @click="secClick('header')">
       <div class="print-title" :style="sectionFontSize('header', 20)">{{ title }}</div>
-      <div class="print-company" :style="sectionFontSize('header', 12)">{{ printConfig?.companyName || '顺居门业' }}</div>
+      <div class="print-company" :style="sectionFontSize('header', 12)">{{ printConfig?.companyName || '示例门窗' }}</div>
     </div>
 
     <!-- Order Info Grid -->
@@ -33,15 +33,15 @@
       <div class="info-grid info-right" :style="infoAlign()">
         <div class="info-item">
           <span class="info-label" :style="sectionFontSize('info', 10)">制单人</span>
-          <span class="info-value" :style="sectionFontSize('info', 11)">{{ printConfig?.creatorName || order.creatorName || '冯伟明' }}</span>
+          <span class="info-value" :style="sectionFontSize('info', 11)">{{ printConfig?.creatorName || order.creatorName || '示例制单人' }}</span>
         </div>
         <div class="info-item">
           <span class="info-label" :style="sectionFontSize('info', 10)">联系电话</span>
-          <span class="info-value" :style="sectionFontSize('info', 11)">{{ printConfig?.creatorPhone || order.creatorPhone || '18948846839' }}</span>
+          <span class="info-value" :style="sectionFontSize('info', 11)">{{ printConfig?.creatorPhone || order.creatorPhone || '13800000000' }}</span>
         </div>
         <div class="info-item full">
           <span class="info-label" :style="sectionFontSize('info', 10)">公司地址</span>
-          <span class="info-value" :style="sectionFontSize('info', 11)">{{ printConfig?.creatorAddress || order.creatorAddress || '乳源县二九一物流仓库' }}</span>
+          <span class="info-value" :style="sectionFontSize('info', 11)">{{ printConfig?.creatorAddress || order.creatorAddress || '示例省示例市示例区示例路1号' }}</span>
         </div>
       </div>
     </div>
@@ -180,7 +180,7 @@ import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { getSystemSettings } from '@/api/admin'
 
 const props = defineProps({
-  title: { type: String, default: '顺居门窗客户销售单' },
+  title: { type: String, default: '示例门窗客户销售单' },
   order: { type: Object, default: () => ({}) },
   items: { type: Array, default: () => [] },
   type: { type: String, default: 'sale' },

@@ -240,9 +240,19 @@ fn migrate_if_empty(data_dir: &PathBuf, exe_dir: &PathBuf) {
         sources.push(exe_dir.clone());
     }
     if let Ok(app_data) = std::env::var("APPDATA") {
-        let apdata_dir = PathBuf::from(app_data).join("com.shunjumc.window-system");
+        let appdata_root = PathBuf::from(app_data);
+        let apdata_dir = appdata_root.join("com.example.window-system");
         if apdata_dir != *data_dir {
             sources.push(apdata_dir);
+        }
+        if let Ok(entries) = std::fs::read_dir(&appdata_root) {
+            for entry in entries.flatten() {
+                let path = entry.path();
+                let name = entry.file_name().to_string_lossy().to_lowercase();
+                if name.contains("window-system") && path != *data_dir && !sources.contains(&path) {
+                    sources.push(path);
+                }
+            }
         }
     }
     for src in sources {
@@ -332,7 +342,7 @@ fn build_loading_url() -> String {
       @keyframes blink{0%,80%,100%{opacity:.2}40%{opacity:1}}
     </style></head><body>
     <div class="box">
-      <div class="title">顺居门业管理系统</div>
+      <div class="title">门窗管理系统</div>
       <div class="sub">正在启动后台服务<span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
     </div></body></html>"#;
     let encoded = utf8_percent_encode(html, HTML_ENCODE_SET);
@@ -358,7 +368,7 @@ fn show_error_dialog(msg: &str) {
     use std::ffi::OsStr;
     use std::os::windows::ffi::OsStrExt;
     type MessageBoxW = unsafe extern "system" fn(isize, *const u16, *const u16, u32) -> i32;
-    let title: Vec<u16> = OsStr::new("顺居门业管理系统\0").encode_wide().collect();
+    let title: Vec<u16> = OsStr::new("门窗管理系统\0").encode_wide().collect();
     let body: Vec<u16> = OsStr::new(&format!("{}\0", msg)).encode_wide().collect();
     unsafe {
         let lib = b"user32.dll\0";
@@ -793,7 +803,7 @@ fn save_crash_logs(data_dir: &PathBuf, app_version: &str) -> Option<PathBuf> {
     let out_path = desktop.join(format!("{}_崩溃日志.log", stamp));
 
     let mut content = String::new();
-    content.push_str("================ 顺居门业管理系统 崩溃日志 ================\n");
+    content.push_str("================ 门窗管理系统 崩溃日志 ================\n");
     content.push_str(&format!("应用版本: {}\n", app_version));
     content.push_str(&format!("日志生成时间: {}\n", stamp));
     content.push_str(&format!("数据目录: {}\n", data_dir.display()));
@@ -918,7 +928,7 @@ fn init_win32_tray(app_handle: tauri::AppHandle, icon_rgba: &[u8], w: u32, h: u3
     std::thread::spawn(move || unsafe {
         let hicon = rgba_to_hicon(&rgba_owned, w, h);
         let hi = GetModuleHandleW(std::ptr::null());
-        let class_wide = wide_null("ShunjuTrayClass");
+        let class_wide = wide_null("WindowSystemTrayClass");
         let wc = WNDCLASSW {
             style: CS_HREDRAW | CS_VREDRAW,
             lpfn_wndproc: Some(tray_wndproc as _),
@@ -948,7 +958,7 @@ fn init_win32_tray(app_handle: tauri::AppHandle, icon_rgba: &[u8], w: u32, h: u3
         nid.u_flags = NIF_MESSAGE | NIF_TIP | NIF_ICON;
         nid.u_callback_message = WM_TRAYICON;
         nid.h_icon = hicon;
-        let tip = wide_null("顺居门业管理系统");
+        let tip = wide_null("门窗管理系统");
         let tlen = std::cmp::min(tip.len(), 128);
         nid.sz_tip[..tlen].copy_from_slice(&tip[..tlen]);
 
@@ -1274,7 +1284,7 @@ pub fn run() {
                 let app_data = std::env::var("APPDATA")
                     .map(PathBuf::from)
                     .unwrap_or_else(|_| exe_dir.clone());
-                let forced = app_data.join("com.shunjumc.window-system");
+                let forced = app_data.join("com.example.window-system");
                 std::fs::create_dir_all(forced.join("data"))
                     .unwrap_or_else(|e| show_error_and_exit(&format!("无法创建数据目录: {}", e)));
                 log::warn!("安装在 Program Files，数据固定存到: {:?}", forced);
@@ -1295,7 +1305,7 @@ pub fn run() {
                     let app_data = std::env::var("APPDATA")
                         .map(PathBuf::from)
                         .unwrap_or_else(|_| exe_dir.clone());
-                    let fallback = app_data.join("com.shunjumc.window-system");
+                    let fallback = app_data.join("com.example.window-system");
                     std::fs::create_dir_all(fallback.join("data"))
                         .unwrap_or_else(|e| show_error_and_exit(&format!("无法创建数据目录: {}", e)));
                     log::warn!("安装目录无写入权限，数据存储到: {:?}", fallback);
@@ -1315,7 +1325,7 @@ pub fn run() {
             let lock_path = data_dir.join("app.lock");
             if !try_acquire_lock(&lock_path) {
                 diag_log(&data_dir, "single-instance lock held by another instance");
-                show_error_and_exit("顺居门业管理系统已在运行中。");
+                show_error_and_exit("门窗管理系统已在运行中。");
             }
 
             // ── 崩溃日志：上次会话异常退出（卡死强制重启/崩溃）→ 自动把日志存到桌面 ──
@@ -1427,7 +1437,7 @@ pub fn run() {
                 "main",
                 tauri::WebviewUrl::External(tauri::Url::parse(&loading_url).unwrap()),
             )
-            .title("顺居门业管理系统")
+            .title("门窗管理系统")
             .inner_size(1280.0, 800.0)
             .min_inner_size(1024.0, 680.0)
             .resizable(true)

@@ -113,19 +113,19 @@
             <div class="section-title">公司信息</div>
             <div class="form-row">
               <label>公司名称</label>
-              <el-input v-model="config.companyName" size="small" placeholder="顺居门业" />
+              <el-input v-model="config.companyName" size="small" placeholder="示例门窗" />
             </div>
             <div class="form-row">
               <label>制单人</label>
-              <el-input v-model="config.creatorName" size="small" placeholder="冯伟明" />
+              <el-input v-model="config.creatorName" size="small" placeholder="示例制单人" />
             </div>
             <div class="form-row">
               <label>联系电话</label>
-              <el-input v-model="config.creatorPhone" size="small" placeholder="18948846839" />
+              <el-input v-model="config.creatorPhone" size="small" placeholder="13800000000" />
             </div>
             <div class="form-row">
               <label>公司地址</label>
-              <el-input v-model="config.creatorAddress" size="small" placeholder="乳源县二九一物流仓库" />
+              <el-input v-model="config.creatorAddress" size="small" placeholder="示例省示例市示例区示例路1号" />
             </div>
           </div>
 
@@ -193,7 +193,7 @@
             <!-- Header -->
             <div class="p-header section-clickable" :class="{ 'section-selected': selectedSection === 'header' }" :style="previewSectionBold('header')" @click.stop="selectSection('header')">
               <div class="p-title" :style="previewSectionFontSize('header', 20)">{{ previewTitle }}</div>
-              <div class="p-company" :style="previewSectionFontSize('header', 12)">{{ config.companyName || '顺居门业' }}</div>
+              <div class="p-company" :style="previewSectionFontSize('header', 12)">{{ config.companyName || '示例门窗' }}</div>
             </div>
 
             <!-- Order Info -->
@@ -202,13 +202,13 @@
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">订单编号</span><span class="p-value mono" :style="previewSectionFontSize('info', 10)">SJ2026050001</span></div>
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">开单日期</span><span class="p-value" :style="previewSectionFontSize('info', 11)">2026/05/19</span></div>
                 <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">客户</span><span class="p-value" :style="previewSectionFontSize('info', 11)">张三</span></div>
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">联系电话</span><span class="p-value" :style="previewSectionFontSize('info', 11)">13800138000</span></div>
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">安装地址</span><span class="p-value" :style="previewSectionFontSize('info', 11)">乳源县某小区</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">联系电话</span><span class="p-value" :style="previewSectionFontSize('info', 11)">13800000000</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">安装地址</span><span class="p-value" :style="previewSectionFontSize('info', 11)">示例小区</span></div>
               </div>
               <div class="p-info-right" :style="{ textAlign: config.sectionStyles.info.align || 'left' }">
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">制单人</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorName || '冯伟明' }}</span></div>
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">联系电话</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorPhone || '18948846839' }}</span></div>
-                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">公司地址</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorAddress || '乳源县二九一物流仓库' }}</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">制单人</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorName || '示例制单人' }}</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">联系电话</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorPhone || '13800000000' }}</span></div>
+                <div class="p-info-row"><span class="p-label" :style="previewSectionFontSize('info', 10)">公司地址</span><span class="p-value" :style="previewSectionFontSize('info', 11)">{{ config.creatorAddress || '示例省示例市示例区示例路1号' }}</span></div>
               </div>
             </div>
 
@@ -470,15 +470,15 @@
             <div class="section-title">公司信息</div>
             <div class="form-row">
               <label>公司名称</label>
-              <el-input v-model="asConfig.companyName" size="small" placeholder="顺居门业" />
+              <el-input v-model="asConfig.companyName" size="small" placeholder="示例门窗" />
             </div>
             <div class="form-row">
               <label>联系电话</label>
-              <el-input v-model="asConfig.creatorPhone" size="small" placeholder="18948846839" />
+              <el-input v-model="asConfig.creatorPhone" size="small" placeholder="13800000000" />
             </div>
             <div class="form-row">
               <label>公司地址</label>
-              <el-input v-model="asConfig.creatorAddress" size="small" placeholder="乳源县二九一物流仓库" />
+              <el-input v-model="asConfig.creatorAddress" size="small" placeholder="示例省示例市示例区示例路1号" />
             </div>
           </div>
 
@@ -517,8 +517,8 @@
           <div class="as-preview-page" :style="asPreviewPageStyle">
             <!-- Header -->
             <div class="as-p-header" :style="asPreviewSectionBold('header')">
-              <div class="as-p-title" :style="asPreviewSectionFontSize('header', 20)">顺居门业售后单</div>
-              <div class="as-p-company" :style="asPreviewSectionFontSize('header', 12)">{{ asConfig.companyName || '顺居门业' }}</div>
+              <div class="as-p-title" :style="asPreviewSectionFontSize('header', 20)">示例门窗售后单</div>
+              <div class="as-p-company" :style="asPreviewSectionFontSize('header', 12)">{{ asConfig.companyName || '示例门窗' }}</div>
             </div>
 
             <!-- Order Info -->
@@ -558,7 +558,7 @@
                 </div>
                 <div class="as-p-info-item" v-if="asConfig.showTechnician">
                   <span class="as-p-label" :style="asPreviewSectionFontSize('info', 10)">师傅</span>
-                  <span class="as-p-value" :style="asPreviewSectionFontSize('info', 11)">李师傅</span>
+                  <span class="as-p-value" :style="asPreviewSectionFontSize('info', 11)">示例师傅</span>
                 </div>
                 <div class="as-p-info-item">
                   <span class="as-p-label" :style="asPreviewSectionFontSize('info', 10)">预约日期</span>
@@ -610,7 +610,7 @@
 
             <!-- Footer -->
             <div class="as-p-footer" :style="asPreviewSectionBold('footer')">
-              <span :style="asPreviewSectionFontSize('footer', 10)">顺居门业 · 售后服务单</span>
+              <span :style="asPreviewSectionFontSize('footer', 10)">示例门窗 · 售后服务单</span>
               <span :style="asPreviewSectionFontSize('footer', 10)">打印日期：2026/06/09</span>
             </div>
             <div class="as-p-footer-text" v-if="asConfig.footerText" :style="asPreviewSectionFontSize('footer', 9)">{{ asConfig.footerText }}</div>
@@ -730,7 +730,7 @@ const previewItems = [
   { productName: '甲级防盗门', color: '红木纹', width: 960, height: 2050, wallThickness: '', glassType: '', lockPosition: '', diaojiao: '', doorCount: 2, fangCount: '', productType: '防盗门', unitPrice: 5300, amount: 10600 },
 ]
 
-const previewTitle = computed(() => '顺居门窗客户销售单')
+const previewTitle = computed(() => '示例门窗客户销售单')
 
 function previewSectionBold(key) {
   const s = config.sectionStyles?.[key]
@@ -1059,9 +1059,9 @@ const AS_DEFAULT_CONFIG = {
   pageHeightMm: 297, // 页面高度(mm)，A4=297；针式两联复写纸通常更矮，需按实际量
   marginTop: 10, marginBottom: 10, marginLeft: 8, marginRight: 8,
   fontSize: 12,
-  companyName: '顺居门业',
-  creatorPhone: '18948846839',
-  creatorAddress: '乳源县二九一物流仓库',
+  companyName: '示例门窗',
+  creatorPhone: '13800000000',
+  creatorAddress: '示例省示例市示例区示例路1号',
   showSignature: true,
   showTechnician: true,
   showSaleOrderNo: true,

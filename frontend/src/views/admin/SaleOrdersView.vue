@@ -1250,8 +1250,8 @@ function toggleEditType(type) {
 }
 
 const printTitle = computed(() => {
-  if (detailOrder.value?.orderType === 'presale') return '顺居门窗客户预算单'
-  return '顺居门业客户销售单'
+  if (detailOrder.value?.orderType === 'presale') return '示例门窗客户预算单'
+  return '示例门窗客户销售单'
 })
 
 const dialogTitle = computed(() => {

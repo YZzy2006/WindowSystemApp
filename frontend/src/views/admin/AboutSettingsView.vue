@@ -10,7 +10,7 @@
       <section class="sec">
         <h3 class="sec-title">Banner 横幅</h3>
         <div class="form-row">
-          <div class="form-g flex-1"><label>主文案</label><input v-model="cfg.bannerDesc" placeholder="扎根乳源二十载，守护万家窗" /></div>
+          <div class="form-g flex-1"><label>主文案</label><input v-model="cfg.bannerDesc" placeholder="扎根本地二十载，守护万家窗" /></div>
           <div class="form-g flex-1"><label>副文案</label><input v-model="cfg.bannerTagline" placeholder="2006-2026 | 本土门窗定制专家" /></div>
         </div>
       </section>
@@ -96,16 +96,16 @@ const cfg = ref(null)
 const saving = ref(false)
 
 const defAbout = {
-  bannerDesc: '扎根乳源二十载，守护万家窗',
+  bannerDesc: '扎根本地二十载，守护万家窗',
   bannerTagline: '2006-2026 | 本土门窗定制专家',
   msNum: '20+', msLabel: '年专注门窗定制',
   stories: [
-    { title: '扎根本地 · 值得信赖', text: '顺居门业深耕乳源门窗市场二十载，从最初一间小作坊发展成为本地门窗定制领域的标杆企业。我们了解乳源山区的气候特点——夏季高温、冬季湿冷、台风频繁——每一款产品都针对本地环境做了优化设计，真正做到了"为乳源家庭而生"。', images: '', imgDesc: '顺居门业门店实景 · 乳城镇鲜明北路' },
+    { title: '扎根本地 · 值得信赖', text: '示例门窗深耕示例市门窗市场二十载，从最初一间小作坊发展成为本地门窗定制领域的标杆企业。我们了解山区的气候特点——夏季高温、冬季湿冷、台风频繁——每一款产品都针对本地环境做了优化设计，真正做到了"为示例市家庭而生"。', images: '', imgDesc: '示例门窗门店实景 · 示例街道示例路' },
     { title: '匠心工艺 · 专业团队', text: '我们拥有从业十年以上的安装师傅团队，每一位师傅都经过严格的技能培训和实操考核。从量尺、设计到安装、调试，每个环节都有标准化流程把控。我们承诺：不外包、不转包，全部由自有团队施工，确保每一扇窗都装得严丝合缝。', images: '', imgDesc: '专业安装团队现场作业 · 自有师傅不外包' },
     { title: '郑重承诺 · 终身维护', text: '型材框架质保十年，五金配件质保五年，玻璃密封质保三年——这些不是营销话术，而是白纸黑字写进合同的服务承诺。质保期内出现任何非人为质量问题，免费上门维修更换。超过质保期，仅收取材料成本费，不收上门费。', images: '', imgDesc: '品质保障 · 每扇窗出厂前全检合格' },
   ],
   values: [
-    { title: '本地品牌', desc: '二十载扎根乳源\\n服务千家万户' },
+    { title: '本地品牌', desc: '二十载扎根本地\\n服务千家万户' },
     { title: '匠心工艺', desc: '精选优质型材\\n严苛品控标准' },
     { title: '诚信服务', desc: '免费上门测量\\n终身售后维护' },
   ],
@@ -118,11 +118,11 @@ const defAbout = {
     { text: '纱窗护栏配件', desc: '304不锈钢 · 防蚊防盗' },
   ],
   testimonials: [
-    { name: '陈先生', location: '碧桂园·天汇', text: '对比了三家门窗店，最后选了顺居。师傅上门量尺很细心，安装也专业。装完整个家都亮堂了，非常满意！' },
-    { name: '李女士', location: '乳源华景雅苑', text: '老房子旧窗换新，怕拆墙太麻烦。结果师傅用无损拆换技术两天就搞定了，一点墙都没坏，效果超出预期。' },
-    { name: '张先生', location: '桂头镇自建房', text: '新建自建房整栋楼的窗户都是顺居做的，用料实在，价格透明。老板人实在，装了三年了没出过任何问题。' },
+    { name: '示例客户A', location: '示例小区', text: '对比了三家门窗店，最后选了示例门窗。师傅上门量尺很细心，安装也专业。装完整个家都亮堂了，非常满意！' },
+    { name: '示例客户B', location: '示例小区', text: '老房子旧窗换新，怕拆墙太麻烦。结果师傅用无损拆换技术两天就搞定了，一点墙都没坏，效果超出预期。' },
+    { name: '示例客户C', location: '示例镇A自建房', text: '新建自建房整栋楼的窗户都是示例门窗做的，用料实在，价格透明。老板人实在，装了三年了没出过任何问题。' },
   ],
-  contact: { phone: '189-4884-6839', hours: '周一至周日 8:00 - 18:00', address: '广东省韶关市乳源瑶族自治县乳城镇鲜明北路大群奔康住宅楼4号店铺', mapUrl: '' },
+  contact: { phone: '138-0000-0000', hours: '周一至周日 8:00 - 18:00', address: '示例省示例市示例区示例街道示例路1号', mapUrl: '' },
 }
 
 onMounted(async () => {

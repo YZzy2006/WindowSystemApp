@@ -89,10 +89,10 @@ public class FileSaveController {
             log.warn("安装目录不可写，尝试其他位置: {}", installDir);
         }
 
-        // 2. 兜底：%APPDATA%/顺居门业/导入导出/
+        // 2. 兜底：%APPDATA%/示例门窗/导入导出/
         String appData = System.getenv("APPDATA");
         if (appData != null) {
-            File exportDir = new File(appData, "顺居门业/" + EXPORT_DIR_NAME);
+            File exportDir = new File(appData, "示例门窗/" + EXPORT_DIR_NAME);
             if (isUsableDir(exportDir)) {
                 log.info("Export dir (AppData): {}", exportDir.getAbsolutePath());
                 return exportDir;

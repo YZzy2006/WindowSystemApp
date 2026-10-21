@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 echo ========================================
-echo  顺居门业管理系统 - 本地版构建
+echo  门窗管理系统 - 本地版构建
 echo ========================================
 echo.
 
@@ -34,6 +34,6 @@ echo  启动命令:
 echo  java -jar target\window-system-1.0.0.jar --spring.profiles.active=local
 echo.
 echo  然后浏览器访问: http://localhost:8080
-echo  登录账号: super_admin / admin123
+echo  登录账号: admin / admin123456
 echo ========================================
 pause

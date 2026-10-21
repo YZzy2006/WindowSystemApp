@@ -16,6 +16,8 @@ public interface AdminService {
 
     void createAdmin(String username, String password);
 
+    void renameAdmin(Integer id, String newUsername);
+
     void freezeAdmin(Integer id);
 
     void unfreezeAdmin(Integer id);

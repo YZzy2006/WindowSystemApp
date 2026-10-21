@@ -32,6 +32,7 @@
               <span v-else class="status-badge active">正常</span>
             </td>
             <td class="col-action">
+              <button v-if="item.role !== 'super_admin'" class="btn-text" @click="openEdit(item)">编辑</button>
               <button v-if="item.role !== 'super_admin'" class="btn-text" @click="handleFreeze(item)">
                 {{ item.isFrozen === 1 ? '解冻' : '冻结' }}
               </button>
@@ -60,6 +61,19 @@
       </template>
     </el-dialog>
 
+    <!-- 编辑管理员对话框 -->
+    <el-dialog v-model="editVisible" title="编辑管理员" width="440px" :close-on-click-modal="false" close-on-press-escape destroy-on-close>
+      <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="80px">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="editForm.username" placeholder="请输入用户名" maxlength="50" />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="editVisible = false">取消</el-button>
+        <el-button class="btn-gold" type="primary" :loading="saving" @click="handleEdit">保存</el-button>
+      </template>
+    </el-dialog>
+
     <!-- 重置密码对话框 -->
     <el-dialog v-model="resetVisible" title="重置密码" width="400px" :close-on-click-modal="false" close-on-press-escape destroy-on-close>
       <p style="margin-bottom:12px;color:#666;">为 <strong>{{ resetTarget }}</strong> 设置新密码：</p>
@@ -79,7 +93,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { getAdminAccounts, createAdminAccount, freezeAdminAccount, unfreezeAdminAccount, resetAdminPassword, deleteAdminAccount } from '@/api/admin'
+import { getAdminAccounts, createAdminAccount, updateAdminAccount, freezeAdminAccount, unfreezeAdminAccount, resetAdminPassword, deleteAdminAccount } from '@/api/admin'
 import RefreshButton from '@/components/RefreshButton.vue'
 
 const list = ref([])
@@ -99,6 +113,15 @@ const passwordValidator = (rule, value, callback) => {
 const addRules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ validator: passwordValidator, trigger: 'blur' }]
+}
+
+// ===== 编辑管理员（修改用户名）=====
+const editVisible = ref(false)
+const editFormRef = ref(null)
+const editTargetId = ref(null)
+const editForm = ref({ username: '' })
+const editRules = {
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
 }
 
 // ===== 重置密码 =====
@@ -142,6 +165,28 @@ async function handleAdd() {
     loadList()
   } catch (err) {
     if (!err._handled) ElMessage.error(err.response?.data?.msg || '创建失败')
+  } finally {
+    saving.value = false
+  }
+}
+
+function openEdit(item) {
+  editTargetId.value = item.id
+  editForm.value = { username: item.username }
+  editVisible.value = true
+}
+
+async function handleEdit() {
+  if (!editFormRef.value) return
+  try { await editFormRef.value.validate() } catch { return }
+  saving.value = true
+  try {
+    await updateAdminAccount(editTargetId.value, { username: editForm.value.username.trim() })
+    ElMessage.success('修改成功')
+    editVisible.value = false
+    loadList()
+  } catch (err) {
+    if (!err._handled) ElMessage.error(err.response?.data?.msg || '修改失败')
   } finally {
     saving.value = false
   }

@@ -9,14 +9,14 @@
       <section class="sec">
         <h3 class="sec-title">联系方式</h3>
         <div class="form-row">
-          <div class="form-g flex-1"><label>电话</label><input v-model="cfg.phone" placeholder="189-4884-6839" /></div>
-          <div class="form-g flex-1"><label>微信号</label><input v-model="cfg.wechat" placeholder="mw-confidence" /></div>
+          <div class="form-g flex-1"><label>电话</label><input v-model="cfg.phone" placeholder="138-0000-0000" /></div>
+          <div class="form-g flex-1"><label>微信号</label><input v-model="cfg.wechat" placeholder="example-window" /></div>
         </div>
         <div class="form-row">
           <div class="form-g flex-1"><label>营业时间</label><input v-model="cfg.hours" placeholder="周一至周日 8:00 - 18:00" /></div>
           <div class="form-g flex-1"><label>联系邮箱</label><input v-model="cfg.email" placeholder="（选填）" /></div>
         </div>
-        <div class="form-g"><label>门店地址</label><input v-model="cfg.address" placeholder="广东省韶关市乳源县..." /></div>
+        <div class="form-g"><label>门店地址</label><input v-model="cfg.address" placeholder="示例省示例市示例区示例街道..." /></div>
         <div class="form-g"><label>地图链接（高德/百度）</label><input v-model="cfg.mapUrl" placeholder="https://uri.amap.com/marker?position=..." /></div>
       </section>
 
@@ -24,11 +24,11 @@
         <h3 class="sec-title">服务区域</h3>
         <div class="form-g">
           <label>区域列表（逗号分隔）</label>
-          <input v-model="cfg.areasStr" placeholder="乳城镇,桂头镇,大桥镇..." @change="cfg.areas = cfg.areasStr.split(',').map(s => s.trim()).filter(Boolean)" />
+          <input v-model="cfg.areasStr" placeholder="示例街道,示例镇A,示例镇B..." @change="cfg.areas = cfg.areasStr.split(',').map(s => s.trim()).filter(Boolean)" />
         </div>
         <div class="form-g">
           <label>区域描述</label>
-          <input v-model="cfg.areaDesc" placeholder="如：我们为乳源全县及周边地区提供门窗定制安装服务" />
+          <input v-model="cfg.areaDesc" placeholder="如：我们为示例全市及周边地区提供门窗定制安装服务" />
         </div>
       </section>
 
@@ -47,15 +47,15 @@ const cfg = ref(null)
 const saving = ref(false)
 
 const defContact = {
-  phone: '189-4884-6839',
-  wechat: 'mw-confidence',
+  phone: '138-0000-0000',
+  wechat: 'example-window',
   hours: '周一至周日 8:00 - 18:00',
   email: '',
-  address: '广东省韶关市乳源瑶族自治县乳城镇鲜明北路大群奔康住宅楼4号店铺',
+  address: '示例省示例市示例区示例街道示例路1号',
   mapUrl: '',
-  areasStr: '乳城镇,桂头镇,大桥镇,游溪镇,东坪镇,洛阳镇,大布镇,必背镇',
-  areas: ['乳城镇','桂头镇','大桥镇','游溪镇','东坪镇','洛阳镇','大布镇','必背镇'],
-  areaDesc: '我们为乳源全县及周边地区提供门窗定制安装服务',
+  areasStr: '示例街道,示例镇A,示例镇B,示例镇C,示例镇D,示例镇E,示例镇F,示例镇G',
+  areas: ['示例街道','示例镇A','示例镇B','示例镇C','示例镇D','示例镇E','示例镇F','示例镇G'],
+  areaDesc: '我们为示例全市及周边地区提供门窗定制安装服务',
 }
 
 onMounted(async () => {

@@ -286,8 +286,8 @@
           <div class="print-page" ref="printPageRef" :style="printPageStyle">
             <!-- Print Header -->
             <div class="print-header">
-              <div class="print-title">顺居门业售后单</div>
-              <div class="print-company">{{ printCfg.companyName || '顺居门业' }}</div>
+              <div class="print-title">示例门窗售后单</div>
+              <div class="print-company">{{ printCfg.companyName || '示例门窗' }}</div>
             </div>
 
             <!-- Order Info -->
@@ -385,7 +385,7 @@
 
             <!-- Footer -->
             <div class="print-footer">
-              <span>{{ printCfg.companyName || '顺居门业' }} · 售后服务单</span>
+              <span>{{ printCfg.companyName || '示例门窗' }} · 售后服务单</span>
               <span>打印日期：{{ new Date().toLocaleDateString('zh-CN') }}</span>
             </div>
             <div class="print-footer-text" v-if="printCfg.footerText">{{ printCfg.footerText }}</div>
@@ -855,7 +855,7 @@ function doPrint() {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>顺居门业售后单 - ${printData.value.orderNo || ''}</title>
+      <title>示例门窗售后单 - ${printData.value.orderNo || ''}</title>
       <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'SimHei', 'SimSun', 'FangSong', sans-serif; font-size: ${fs}px; color: #000; padding: ${mt}mm ${mr}mm ${mb}mm ${ml}mm; background: #fff; }
