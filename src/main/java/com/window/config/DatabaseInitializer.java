@@ -69,8 +69,10 @@ public class DatabaseInitializer implements CommandLineRunner {
         ensureColumns();
         // 老版本安装升级：旧默认演示账号清理 + 超管旧默认密码迁移
         migrateLegacyDefaultAccounts();
-        // 开源版一次性脱敏：清理旧库里的公司/打印/站点信息与登录/操作日志（保留客户/订单等业务数据）
-        sanitizeLegacyOpenSourceData();
+        // 仅处理刚初始化的示例数据，升级时保留用户的设置和日志。
+        if (firstLaunch) {
+            sanitizeLegacyOpenSourceData();
+        }
         // 公式模型迁移：商品回填 formulaId（单位默认公式 / 旧 pricingRule）
         migrateCommodityFormula();
     }

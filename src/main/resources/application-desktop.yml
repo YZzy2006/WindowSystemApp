@@ -1,0 +1,25 @@
+server:
+  address: 127.0.0.1
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:${user.dir}/data/window_db;MODE=MySQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password: ""
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+  sql:
+    init:
+      mode: never
+      encoding: UTF-8
+  h2:
+    console:
+      enabled: false
+
+jwt:
+  secret: "${JWT_SECRET:${random.uuid}${random.uuid}}"
+
+cors:
+  allowed-origins: tauri://localhost,http://localhost:8080,http://localhost

@@ -447,6 +447,22 @@ fn setup_job_object() {
     }
 }
 
+fn find_java(app: &tauri::App) -> Option<String> {
+    let bundled_java = app.path().resolve(
+        "resources/java-runtime/bin/java.exe",
+        tauri::path::BaseDirectory::Resource,
+    ).ok()?;
+    if bundled_java.is_file() {
+        return Some(bundled_java.to_string_lossy().into_owned());
+    }
+
+    #[cfg(debug_assertions)]
+    return find_system_java();
+    #[cfg(not(debug_assertions))]
+    None
+}
+
+#[cfg(debug_assertions)]
 /// Parse the major version from `java -version` output ("17.0.12" -> 17, legacy "1.8.0" -> 8).
 fn java_major_version(java_cmd: &str) -> Option<u32> {
     let out = Command::new(java_cmd).arg("-version").output().ok()?;
@@ -468,11 +484,13 @@ fn java_major_version(java_cmd: &str) -> Option<u32> {
 
 /// Spring Boot 3.3.7 officially supports Java 17-21. Newer JDKs (25/26+) fail to
 /// start the backend, leaving the app stuck on the loading page (black screen).
+#[cfg(debug_assertions)]
 fn java_version_supported(version: u32) -> bool {
     (17..=21).contains(&version)
 }
 
-fn find_java() -> Option<String> {
+#[cfg(debug_assertions)]
+fn find_system_java() -> Option<String> {
     let mut candidates = Vec::new();
     if Command::new("java").arg("-version").stdout(Stdio::null()).stderr(Stdio::null()).status().is_ok() {
         candidates.push("java".to_string());
@@ -1067,7 +1085,8 @@ fn spawn_java(config: &JavaSpawnConfig) -> Option<Child> {
     args.push(install_dir_prop);
     args.push("-jar".to_string());
     args.push(config.jar_str.clone());
-    args.push("--spring.profiles.active=local".to_string());
+    let profiles = if cfg!(debug_assertions) { "local" } else { "local,desktop" };
+    args.push(format!("--spring.profiles.active={profiles}"));
     let mut cmd = Command::new(&config.java_cmd);
     cmd.args(&args)
         .current_dir(&config.data_dir)
@@ -1402,9 +1421,14 @@ pub fn run() {
                 show_error_and_exit(&format!("找不到 JAR 文件: {:?}", jar_path));
             }
 
-            let java_cmd = find_java().unwrap_or_else(|| {
-                diag_log(&data_dir, "java not found (PATH/JAVA_HOME/common paths)");
-                show_error_and_exit("未找到可用的 Java 运行环境。\n\n请安装 Java 17 或 21（JDK 26 等过新版本与系统不兼容，已自动跳过）。");
+            let java_cmd = find_java(app).unwrap_or_else(|| {
+                diag_log(&data_dir, "Java runtime not found");
+                let message = if cfg!(debug_assertions) {
+                    "未找到可用的 Java 运行环境。请安装 Java 17 或 21 后重试。"
+                } else {
+                    "安装包自带的 Java 17 运行环境缺失。请重新安装门窗管理系统。"
+                };
+                show_error_and_exit(message);
             });
             log::info!("Using Java: {}", java_cmd);
 

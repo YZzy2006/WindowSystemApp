@@ -227,14 +227,9 @@ npm run dev              # http://localhost:3000（Vite 代理 /api → 8080）
 
 ### 3. 构建 Windows MSI
 
-```bash
-build-msi.bat
-# 手动：
-cd frontend && npm run build
-mvn package -DskipTests
-cp target/*.jar src-tauri/resources/
-cd src-tauri && cargo tauri build    # 产物 target/release/bundle/msi/
-```
+从仓库根目录运行 `build-msi.bat`。构建脚本会下载并校验 Eclipse Temurin 17 的 Windows x64 JRE，并将完整运行时和许可证一起打包。产物位于 `src-tauri/target/release/bundle/msi/`。
+
+安装后的桌面版使用安装包里的 Java 17，无需用户另行安装 Java。如果从源码手动运行 `cargo tauri build`，先执行 `powershell -NoProfile -File scripts/prepare-java-runtime.ps1` 准备运行时。
 
 ---
 

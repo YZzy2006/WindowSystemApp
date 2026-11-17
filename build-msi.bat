@@ -1,5 +1,5 @@
 @echo off
-chcp 65001 >/dev/null
+chcp 65001 >nul
 echo ========================================
 echo  门窗管理系统 - MSI 安装包构建
 echo ========================================
@@ -14,7 +14,7 @@ cd /d "%~dp0frontend"
 call npm run build
 if errorlevel 1 (
     echo frontend build failed
-    pause
+    if not defined CI pause
     exit /b 1
 )
 
@@ -23,22 +23,28 @@ cd /d "%~dp0"
 call mvn clean package -DskipTests
 if errorlevel 1 (
     echo JAR build failed
-    pause
+    if not defined CI pause
     exit /b 1
 )
 
 echo [4/4] 复制 JAR 到 Tauri 资源目录并构建 MSI...
+if not exist "src-tauri\resources" mkdir "src-tauri\resources"
 copy /Y "target\window-system-1.0.0.jar" "src-tauri\resources\"
 if errorlevel 1 (
     echo JAR copy failed
-    pause
+    if not defined CI pause
+    exit /b 1
+)
+powershell.exe -NoProfile -File "%~dp0scripts\prepare-java-runtime.ps1"
+if errorlevel 1 (
+    echo Java 17 runtime preparation failed
     exit /b 1
 )
 cd /d "%~dp0src-tauri"
 call cargo tauri build
 if errorlevel 1 (
     echo MSI build failed
-    pause
+    if not defined CI pause
     exit /b 1
 )
 echo.
@@ -48,4 +54,4 @@ echo  build complete!
 echo  output: src-tauri\target\release\bundle\msi\
 echo  新 MSI 每次自动生成不同 ProductCode，可直接覆盖升级，无需改版本号
 echo ========================================
-pause
+if not defined CI pause
